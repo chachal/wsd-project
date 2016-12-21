@@ -28,7 +28,7 @@ gether and ensure that if for example a game is deleted,
 then the associated scores are deleted as well. Users 
 will mostly be set to inactive to keep records of purchases.
 
-![Database schema](/doc/wsd.png "Database schema")
+![Database schema](https://git.niksula.hut.fi/viitana3/wsd2016-project/raw/master/doc/wsd.png "Database schema")
 
 #### 3.2. Templates and design ####
 Bootstrap will be used to help with a clean and informative 
@@ -57,14 +57,11 @@ through trello to keep workflow steady. Regular meetups
 wont probably be necessary but collaborating through VOIP 
 is probable.
 
-**Weeks 1-2:** Database models, basic views and templates 
-**Weeks 3-4:** Finish models, create views with SQL queries.  
-Extend templates using bootstrap. Finish minimum requirements. 
-**Weeks 5-6:** JQuery and responsivity. Fill as many optional 
-requirements as possible. 
-**Week 7:** Finishing touches. Hackathons if previous tasks have 
-fallen behind. 
-**18.2.:** Final build deployed
+* Weeks 1-2: Database models, basic views and templates 
+* Weeks 3-4: Finish models, create views with SQL queries. Extend templates using bootstrap. Finish minimum requirements. 
+* Weeks 5-6: JQuery and responsivity. Fill as many optional requirements as possible. 
+* Week 7: Finishing touches. Hackathons if previous tasks have fallen behind. 
+* 18.2.: Final build deployed
 
 
 ### 5. Testing ###
