@@ -28,7 +28,7 @@ gether and ensure that if for example a game is deleted,
 then the associated scores are deleted as well. Users 
 will mostly be set to inactive to keep records of purchases.
 
-![Database schema](doc/wsd.png "Database schema")
+![Database schema](/doc/wsd.png "Database schema")
 
 #### 3.2. Templates and design ####
 Bootstrap will be used to help with a clean and informative 
