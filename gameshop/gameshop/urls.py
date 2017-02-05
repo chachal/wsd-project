@@ -22,4 +22,5 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^$', shopviews.index, name='index'),
 	url(r'^accounts/login/$', auth_views.login),
+	url(r'^scores/$', shopviews.list_scores, name='scores'),
 ]

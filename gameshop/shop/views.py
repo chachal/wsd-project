@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count, Sum
 from django.template.response import TemplateResponse
 from django.template import RequestContext
+from shop.models import UserProfile, Games, Purchased, Scores
+
 # Create your views here.
 
 def index(request):
@@ -51,6 +53,6 @@ def list_purchased(request, userID="1"):
 def list_scores(request, gameID="1"):
 	order_by = request.GET.get('order_by', 'score')
 	scores = Scores.objects.filter(game__id=gameID).order_by(order_by)
-	response = TemplateResponse(request, 'scorelist.html', {'scores': scores})
+	response = TemplateResponse(request, 'scores.html', {'scores': scores})
 	response.render()
 	return response

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+{% load static %}
 	<head>
 	<title>Gameshop</title>
-	<link rel="stylesheet" href="layout.css" />
+	<link rel="stylesheet" href="{% static 'css/layout.css' %}" />
     <meta charset="utf-8" />
   	</head>
   	<body>
@@ -18,9 +19,9 @@
       <div>
         <h3>High Scores</h3>
         <ul>
-          <li><a href="">insert gamename and highscore</a></li>
-          <li><a href="">insert gamename and highscore</a></li>
-          <li><a href="">insert gamename and highscore</a></li>
+		{% for score in scores %}
+          	<li><a href="">{{ score.user.username }} {{ score.game.name }} {{ score.score }}</a></li>
+		{% endfor %}
         </ul>
       </div>
     </body>
