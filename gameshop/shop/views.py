@@ -3,11 +3,14 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count, Sum
-
+from django.template.response import TemplateResponse
+from django.template import RequestContext
 # Create your views here.
 
 def index(request):
-	return HttpResponse("Index site")
+	response = TemplateResponse(request, 'index.html', {})
+	response.render()
+	return response
 
 def login(request):
 	username = request.POST['username']

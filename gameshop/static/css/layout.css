@@ -1,0 +1,36 @@
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#aside {
+	display: block;
+	float: right;
+	width: 20%;
+	
+}
+
+#content {
+	display: block;
+	width: 75%;
+	float: left;
+
+}
+
+#footer {
+	clear: both;
+    text-align: center;
+}
