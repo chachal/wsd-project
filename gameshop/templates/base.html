@@ -3,22 +3,21 @@
   {% load static %}
   <head>
     <title>Gameshop</title>
-    <link rel="stylesheet" href="{% static 'css/layout.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
     <meta charset="utf-8" />
   </head>
   <body>
-    <div id="header">
-      <ul id="title">
-        <h2>Gameshop</h2>
-      </ul>
-    </div>
-    <div id="header">
-      <ul id="navigation">
-        <li><a href="/">Home</a></li>
-        <li><a href="/browse">Browse Games</a></li>
-        <li><a href="/scores">Highscores</a></li>
-      </ul>
-    </div>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Gameshop</a>
+      </div>
+    </nav>
     <div id="main">
       <ul id="aside">
         <button>Logout
