@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block page_content %}
-<div id="content">
-  <p>tänne embedataan abaj</p>
-</div>
-<div id="footer">
-  <p>Copyrights etc. etc.</p>
-</div>
+
+<h2>New games</h2>
+{% for game in games %}
+
+  {% if forloop.counter|divisibleby:"4" %}
+    <div class="row">
+  {% endif %}
+  <div class="col"><p>asdsadsa</p></div>
+  {% if forloop.counter|divisibleby:"4" %}
+    </div>
+  {% endif %}
+{% endfor %}
+
 {% endblock %}

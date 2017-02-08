@@ -10,7 +10,9 @@ from shop.models import UserProfile, Games, Purchased, Scores
 # Create your views here.
 
 def index(request):
-	response = TemplateResponse(request, 'index.html', {})
+	order_by = request.GET.get('order_by', 'released')
+	games = Games.objects.all().order_by(order_by)[:16]
+	response = TemplateResponse(request, 'index.html', {'games': games})
 	response.render()
 	return response
 

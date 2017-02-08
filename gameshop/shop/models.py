@@ -12,11 +12,14 @@ class Games(models.Model):
 	name = models.CharField(max_length = 30, unique=True)
 	price = models.IntegerField()
 	dev = models.ForeignKey(User, on_delete=models.CASCADE)
+	released = models.DateField(auto_now_add=True)
+	latest = models.DateField(auto_now=True)
 
 class Purchased(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
 	game = models.ForeignKey(Games, on_delete=models.CASCADE)
 	active = models.BooleanField(default=False)
+	date = models.DateField(auto_now_add=True)
 
 class Scores(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
