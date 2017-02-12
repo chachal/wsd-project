@@ -16,6 +16,20 @@ def index(request):
 	response.render()
 	return response
 
+def mygames(request):
+	order_by = request.GET.get('order_by', 'released')
+	games = Games.objects.all().order_by(order_by)[:16]
+	response = TemplateResponse(request, 'gamelist.html', {'games': games})
+	response.render()
+	return response
+
+def shop(request):
+	order_by = request.GET.get('order_by', 'released')
+	games = Games.objects.all().order_by(order_by)[:16]
+	response = TemplateResponse(request, 'shop.html', {'games': games})
+	response.render()
+	return response
+
 def login(request):
 	username = request.POST['username']
 	password = request.POST['password']
