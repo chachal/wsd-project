@@ -3020,6 +3020,7 @@ select[multiple].input-lg {
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
+  padding:20px 20px 0px 0px;
 }
 .btn:focus,
 .btn:active:focus,
