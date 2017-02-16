@@ -25,4 +25,6 @@ urlpatterns = [
 	url(r'^scores/$', shopviews.list_scores, name='scores'),
 	url(r'^mygames/$', shopviews.mygames, name='mygames'),
 	url(r'^shop/$', shopviews.shop, name='shop'),
+	url(r'^register/$', shopviews.register),
+
 ]

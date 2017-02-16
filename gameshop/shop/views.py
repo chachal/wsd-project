@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -6,6 +6,7 @@ from django.db.models import Q, Count, Sum
 from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
+from shop.forms import AddUserForm
 
 # Create your views here.
 
@@ -38,6 +39,17 @@ def login(request):
 		login(request, user)
 	else:
 		print('Invalid username or password!')
+
+def register(request):
+	if request.method == 'POST':
+		user_form = AddUserForm(data=request.POST)
+		if user_form.is_valid():
+			user = user_form.save()
+			return redirect('index')
+	else:
+    		user_form = AddUserForm()
+
+	return render(request,'register.html', {'form': user_form })
 
 def logout(request):
 	logout(request)

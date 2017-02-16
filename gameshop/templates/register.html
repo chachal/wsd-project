@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block page_content %}
+
+<h2>Registeru user</h2>
+
+  {% block login %}
+  <form method="POST" action="/register/">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Register">
+  </form>
+{% endblock%}
+
+
+{% endblock %}
