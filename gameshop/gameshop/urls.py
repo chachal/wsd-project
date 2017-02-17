@@ -21,10 +21,11 @@ from shop import views as shopviews
 urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^$', shopviews.index, name='index'),
-	url(r'^accounts/login/$', auth_views.login),
 	url(r'^scores/$', shopviews.list_scores, name='scores'),
 	url(r'^mygames/$', shopviews.mygames, name='mygames'),
 	url(r'^shop/$', shopviews.shop, name='shop'),
 	url(r'^register/$', shopviews.register),
+	url(r'^login', shopviews.login, name='login'),
+	url(r'^logout/$', shopviews.logout, name='logout'),
 
 ]

@@ -2,9 +2,9 @@
 {% load i18n %}
 {% block page_content %}
 
-<h2>Registeru user</h2>
+<h2>Register user</h2>
 
-  {% block login %}
+{% block register %}
   <form method="POST" action="/register/">
     {% csrf_token %}
     {{form.as_p}}

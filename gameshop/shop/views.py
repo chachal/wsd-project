@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count, Sum
 from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
-from shop.forms import AddUserForm
+from shop.forms import AddUserForm, LoginForm
 
 # Create your views here.
 
@@ -32,19 +32,25 @@ def shop(request):
 	return response
 
 def login(request):
-	username = request.POST['username']
-	password = request.POST['password']
-	user = authenticate(username=username, password=password)
-	if user is not None:
-		login(request, user)
+	if request.method == 'POST':
+		username = request.POST['username']
+		password = request.POST['password']
+		user = authenticate(username=username, password=password)
+		if user is not None:
+			auth_login(request, user)
+			return redirect(index)
+		else:
+			return redirect(login)
 	else:
-		print('Invalid username or password!')
+    		login_form = LoginForm()
+	return render(request,'login.html', {'form': login_form })
 
 def register(request):
 	if request.method == 'POST':
 		user_form = AddUserForm(data=request.POST)
 		if user_form.is_valid():
 			user = user_form.save()
+
 			return redirect('index')
 	else:
     		user_form = AddUserForm()
@@ -52,7 +58,8 @@ def register(request):
 	return render(request,'register.html', {'form': user_form })
 
 def logout(request):
-	logout(request)
+	auth_logout(request)
+	return redirect('index')
 
 """Tarkistetaan onko admin"""
 def list_users(request):

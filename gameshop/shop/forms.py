@@ -3,26 +3,30 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 
 class AddUserForm(ModelForm):
-    role_choices = (('user', 'user'), ('publisher', 'publisher'), ('admin', 'admin'))
     email = forms.EmailField(required=True)
     first_name = forms.CharField(required = True)
     last_name = forms.CharField(required = True)
-    role = forms.ChoiceField(choices=role_choices)
     password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'role')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password')
 
     def save(self,commit = True):
         user = super(AddUserForm, self).save(commit = True)
         user_profile = user.profile
-        user_profile.role = self.cleaned_data['role']
         user_profile.save()
+        user.set_password(user.password)
+        user.save()
+
         return user, user_profile
 
         if commit:
             user.save()
             return user
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=100, required=True, label="Username")
+    password = forms.CharField(widget=forms.PasswordInput(), label="Password")
 
 

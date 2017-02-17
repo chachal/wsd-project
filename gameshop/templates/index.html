@@ -2,16 +2,22 @@
 {% load i18n %}
 {% block page_content %}
 
-<h2>New games</h2>
-{% for game in games %}
+  <h2>New games</h2>
 
-  {% if forloop.counter|divisibleby:"4" %}
-    <div class="row">
+
+  {% if not user.is_authenticated%}
+    <p>Please log in to use your games and shop!<p>
   {% endif %}
-  <div class="col"><p>asdsadsa</p></div>
-  {% if forloop.counter|divisibleby:"4" %}
-    </div>
-  {% endif %}
-{% endfor %}
+
+  {% for game in games %}
+
+    {% if forloop.counter|divisibleby:"4" %}
+      <div class="row">
+    {% endif %}
+    <div class="col"><p>asdsadsa</p></div>
+    {% if forloop.counter|divisibleby:"4" %}
+      </div>
+    {% endif %}
+  {% endfor %}
 
 {% endblock %}
