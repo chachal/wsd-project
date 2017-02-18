@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q, Count, Sum
 from django.template.response import TemplateResponse
 from django.template import RequestContext
@@ -17,20 +17,6 @@ def index(request):
 	order_by = request.GET.get('order_by', 'released')
 	games = Games.objects.all().order_by(order_by)[:16]
 	response = TemplateResponse(request, 'index.html', {'games': games})
-	response.render()
-	return response
-
-def mygames(request):
-	order_by = request.GET.get('order_by', 'released')
-	games = Games.objects.all().order_by(order_by)[:16]
-	response = TemplateResponse(request, 'gamelist.html', {'games': games})
-	response.render()
-	return response
-
-def shop(request):
-	order_by = request.GET.get('order_by', 'released')
-	games = Games.objects.all().order_by(order_by)[:16]
-	response = TemplateResponse(request, 'shop.html', {'games': games})
 	response.render()
 	return response
 
@@ -81,13 +67,14 @@ def logout(request):
 	auth_logout(request)
 	return redirect('index')
 
-"""Tarkistetaan onko admin"""
+@user_passes_test(check_admin)
 def list_users(request):
 	order_by = request.GET.get('order_by', 'user')
 	users = UserProfile.objects.all().order_by(order_by)
 	response = TemplateResponse(request, 'admin_userlist.html', {'users': users})
 	response.render()
 	return reponse
+
 
 def list_games(request):
 	order_by = request.GET.get('order_by', 'name')
@@ -96,7 +83,7 @@ def list_games(request):
 	response.render()
 	return response
 
-"""Tarkistetaan onko kirjautunut"""
+@login_required
 def list_purchased(request, userID="1"):
 	order_by = request.GET.get('order_by', 'game')
 	purchased = Purchased.objects.filter(owner__id=userID).order_by(order_by)
