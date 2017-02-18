@@ -100,15 +100,14 @@ def game(request, gameID="1"):
 	scores = Scores.objects.filter(game__id=gameID)
 	users = User.objects.all()
 	scorelist = []
-	n = 0
 	for user in users:
-		scorelist.append([])
-		scorelist[n].append(user.username)
+		userscore = []
+		userscore.append(user.username)
 		for score in scores:
 			if score.user == user:
-				scorelist[n].append(score.score)
-		n = n +1
-	scorelist = sorted(scorelist, key=lambda points: points[0], reverse=True)
+				userscore.append(score.score)
+		scorelist.append(userscores)
+	scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
 	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'currentuser': currentuser, 'purchased': purchased})
 	response.render()
 	return response
