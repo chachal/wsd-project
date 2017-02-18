@@ -25,6 +25,7 @@ class Games(models.Model):
 	dev = models.ForeignKey(User, on_delete=models.CASCADE)
 	released = models.DateField(auto_now_add=True)
 	latest = models.DateField(auto_now=True)
+	url = models.URLField(default=None)
 
 class Purchased(models.Model):
 	owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -36,5 +37,3 @@ class Scores(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	game = models.ForeignKey(Games, on_delete=models.CASCADE)
 	score = models.PositiveIntegerField()
-	
-

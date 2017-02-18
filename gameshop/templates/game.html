@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block page_content %}
+
+  <h2>{{ game.name }}</h2>
+
+  {% with owned="False" %}
+  {% for entry in currentpurchased %}
+
+    {% if game == entry.game %}
+
+      {% with owned="True" %}
+
+    {% endif %}
+
+  {% endfor %}
+  {% if not owned == "True" %}
+
+    <p> You have not purchased this game. </p>
+
+  {% else %}
+
+    <iframe src=game.url></iframe>
+    <div class="div-table">
+      <div class="div-table-row div-table-heading">
+      <div style="width: 60%">'Player'</div>
+      <div style="width: 40%">'Highscore'</div>
+    </div>
+
+    {% for userscore in userscores %}
+      <div class="div-table-row">
+        <div style="width: 60%">{{ userscore.0 }}</div>
+        <div style="width: 40%">{{ userscore.1 }}</div>
+      </div>
+
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+{% endblock %}
