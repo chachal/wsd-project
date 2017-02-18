@@ -7,6 +7,7 @@ from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
 from shop.forms import AddUserForm, LoginForm
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -95,18 +96,18 @@ def list_scores(request, gameID="1"):
 def game(request, gameID="1"):
 	currentuser = request.user
 	currentpurchased = Purchased.objects.filter(owner__id=currentuser.id)
-	game = Games.objects.filter(game__id=gameID)
+	game = Games.objects.filter(id=gameID)
 	scores = Scores.objects.filter(game__id=gameID)
-	users = UserProfile.objects.filter(user__in=scores)
+	users = User.objects.all()
 	scorelist = []
+	n = 0
 	for user in users:
-		userscore = []
-		userscore.append(user.user)
+		scorelist.append([])
+		scorelist[n].append(user.username)
 		for score in scores:
-			if score.user == user.user:
-				userscore.append(score.score)
-		scorelist.append[userscores]
-	scorelist.sort(key=itemgetter(1), reverse=True)
+			if score.user == user:
+				scorelist[n].append(score.score)
+	scorelist = sorted(scorelist, key=lambda points: points[0], reverse=True)
 	response = TemplateResponse(request, 'game.html', {'game': game}, {'highscores': scorelist}, {'currentuser': currentuser}, {'currentpurchased': currentpurchased})
 	response.render()
 	return response
