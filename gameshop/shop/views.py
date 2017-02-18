@@ -9,6 +9,7 @@ from shop.models import UserProfile, Games, Purchased, Scores
 from shop.forms import AddUserForm, LoginForm
 from django.core import mail
 from django.core.signing import Signer
+from shop.util import check_developer, check_admin
 
 
 # Create your views here.
