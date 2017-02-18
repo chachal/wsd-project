@@ -10,13 +10,15 @@ class AddUserForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
+        fields = ('username', 'password', 'first_name', 'last_name', 'email')
 
-    def save(self,commit = True):
+    def save(self,key, commit = True):
         user = super(AddUserForm, self).save(commit = True)
         user_profile = user.profile
+        user_profile.confcode = key
         user_profile.save()
         user.set_password(user.password)
+        user.is_active = False
         user.save()
 
         return user, user_profile

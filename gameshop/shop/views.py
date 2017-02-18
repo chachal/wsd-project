@@ -7,6 +7,9 @@ from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
 from shop.forms import AddUserForm, LoginForm
+from django.core import mail
+from django.core.signing import Signer
+
 
 # Create your views here.
 
@@ -49,13 +52,30 @@ def register(request):
 	if request.method == 'POST':
 		user_form = AddUserForm(data=request.POST)
 		if user_form.is_valid():
-			user = user_form.save()
-
+			signer = Signer()
+			signed_value = signer.sign(user_form.cleaned_data['email'])
+			key = ''.join(signed_value.split(':')[1:])
+			url = 'http://127.0.0.1:8000/confirmation/?code=' + key
+			with mail.get_connection() as connection:
+				mail.EmailMessage('Registration confirmation', url, to=[user_form.cleaned_data['email']]).send()
+			user = user_form.save(key)
 			return redirect('index')
+
+			
 	else:
     		user_form = AddUserForm()
 
 	return render(request,'register.html', {'form': user_form })
+
+def confirmation(request):
+	code = request.GET['code']
+	user = UserProfile.objects.get(confcode = code)
+	if user.user.is_active:
+		return httpresponse('User is already activated')
+	else:
+		user.user.is_active = 1
+		user.user.save()
+		return redirect('index')
 
 def logout(request):
 	auth_logout(request)
