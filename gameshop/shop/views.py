@@ -53,7 +53,7 @@ def register(request):
 		user_form = AddUserForm(data=request.POST)
 		if user_form.is_valid():
 			signer = Signer()
-			signed_value = signer.sign(user_form.cleaned_data['email'])
+			signed_value = signer.sign(user_form.cleaned_data['username'])
 			key = ''.join(signed_value.split(':')[1:])
 			url = 'http://127.0.0.1:8000/confirmation/?code=' + key
 			with mail.get_connection() as connection:
