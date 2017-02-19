@@ -96,4 +96,5 @@ Aku - Authentication
 Antti - Developer tools  
 Charlotta - Front end  
 
+https://aqueous-brook-23280.herokuapp.com/ deployed version
 
