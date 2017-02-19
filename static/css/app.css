@@ -20,10 +20,73 @@
 }
 
 #searchform {
-  margin-top: 12px
+  margin-top: 12px;
 }
 
-#tabletitle {
-  font-size: 15pt
-  color: green
+#game {
+  float: left;
+}
+
+#highscores {
+  width: 40%;
+  border: 1px solid black;
+  padding-left 10px;
+}
+
+button {
+  background-color: #212121;
+  color: #cecece;
+}
+
+input {
+  background-color: #3c3c3c;
+}
+
+input[type="submit"] {
+  background-color: #212121;
+  color: #cecece;
+}
+
+table {
+  border: 1px solid black;
+}
+
+nav.navbar {
+  border-color: #000000;
+  background-color: #2f2f2f;
+}
+
+body {
+  background-color: #2f2f2f;
+}
+
+p, td, li, th, td {
+  color: #cecece;
+  font-weight: lighter;
+}
+
+a {
+  font-weight: bold;
+  color: #cecece;
+}
+
+a:hover {
+  color: #ffffff;
+}
+
+th.highscore, td.highscore {
+  text-align: center;
+  padding: 20px;
+}
+
+th, td {
+  padding: 15px;
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: #cecece
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+  color: #ffffff
 }

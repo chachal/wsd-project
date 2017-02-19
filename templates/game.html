@@ -28,28 +28,25 @@
 
   {% else %}
 
-  <h2>You are now playing " {{ game.name }} "</h2>
+  <p>You are now playing " {{ game.name }} "</p>
 
-    <iframe src= {{ game.url }} name="game" frameborder="0" scrolling="no" onload="resizeIframe(this)" >
+    <iframe src= {{ game.url }} id="game" frameborder="0" scrolling="no" onload="resizeIframe(this)" >
     </iframe>
 
-
-  {% endif %}
-
-    <div class="div-table" id="tabletitle">
-      <div class="div-table-row div-table-heading">
-      <div style="width: 60%">Player</div>
-      <div style="width: 40%">Highscore</div>
-    </div>
-
-    <button id=test>Test</button>
+    <table id="highscores">
+      <tr>
+        <th class="highscore">Player</th>
+        <th class="highscore">Highscore</th>
+      </tr>
     {% for userscore in userscores %}
-      <div class="div-table-row">
-        <div style="width: 60%">{{ userscore.0 }}</div>
-        <div style="width: 40%">{{ userscore.1 }}</div>
-      </div>
+      <tr class="highscore">
+        <td>{{ userscore.0 }}</td>
+        <td>{{ userscore.1 }}</td>
+      </tr>
     {% endfor %}
 
+  </table>
+  {% endif %}
 
 
 {% endblock %}
