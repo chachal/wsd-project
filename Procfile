@@ -1,2 +1,2 @@
-web: gunicorn django_heroku_demo.wsgi --log-file -
+web: gunicorn gameshop.wsgi --log-file -
 
