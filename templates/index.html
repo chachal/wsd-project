@@ -6,16 +6,12 @@
     <p>Please log in to play your games and shop!<p>
 
   {% else %}
-  <p>New this month:</p>
-  <table style="width:100%">
-    <tr>
-      <th id="tabletitle">Game</th>
-      <th id="tabletitle">Released</th>
-    </tr>
+  <p>New games this month:</p>
+  <table style="width:40%">
     {% for game in games %}
     <tr>
-      <td><a href="http://127.0.0.1:8000/game?gameID={{ game.id }}">{{ game.name}}</a></td>
-      <td>{{ game.released}}</td>
+      <td style="width:30%"><a href="http://127.0.0.1:8000/game?gameID={{ game.id }}">{{ game.name}}</a></td>
+      <td style="width:10%">{{ game.released}}</td>
     </tr>
     {% endfor %}
   </table>
