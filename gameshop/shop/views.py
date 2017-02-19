@@ -93,13 +93,19 @@ def list_scores(request, gameID="1"):
 	response.render()
 	return response
 
-def game(request, gameID="1"):
+def game(request):
+	gameID = request.GET['gameID']
+	owned = False
 	currentuser = request.user
 	purchased = Purchased.objects.filter(owner__id=currentuser.id)
-	game = Games.objects.filter(id=gameID)
+	game = Games.objects.get(id=gameID)
 	scores = Scores.objects.filter(game__id=gameID)
 	users = User.objects.all()
 	scorelist = []
+	for entry in purchased:
+		if game == purchased.game:
+			owned = True
+			break
 	for user in users:
 		userscore = []
 		userscore.append(user.username)
@@ -108,6 +114,6 @@ def game(request, gameID="1"):
 				userscore.append(score.score)
 		scorelist.append(userscores)
 	scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
-	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'currentuser': currentuser, 'purchased': purchased})
+	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned})
 	response.render()
 	return response
