@@ -177,7 +177,7 @@ def developergames(request):
 	response = TemplateResponse(request, 'developergames.html', {'games':games})
 	response.render()
 	return response
-		
+
 
 def statistics(request):
 	gameid = request.GET['gameid']
@@ -193,7 +193,7 @@ def statistics(request):
 def shop(request):
 	order_by_name = request.GET.get('order_by', 'name')
 	order_by_price = request.GET.get('order_by', 'price')
-	order_by_developer = request.GET.get('order_by', 'developer')
+	order_by_developer = request.GET.get('order_by', 'dev__username')
 	order_by_released = request.GET.get('order_by', 'released')
 	games = Games.objects.all().order_by(order_by_name)
 	response = TemplateResponse(request, 'shop.html', {'games': games, 'order_by_name': order_by_name,'order_by_price': order_by_price,'order_by_developer': order_by_developer,'order_by_released': order_by_released})
@@ -206,7 +206,7 @@ def paysuccess(request):
 	ref = request.GET['ref']
 	result = request.GET['result']
 	checksum = request.GET['checksum']
-	
+
 	checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, ref, result, "c858a84d04755915ded5daba44a3644f")
 	m = md5(checksumstr.encode("ascii"))
 	checksumlocal = m.hexdigest()
@@ -220,20 +220,20 @@ def paysuccess(request):
 	return redirect('/game/?gameID='+gameid)
 	#else:
 	#	return HttpResponse("404")
-	
+
 def paycancel(request):
 	return HttpResponse("404")
-	
+
 def payfail(request):
 	return HttpResponse("404")
-	
+
 
 def mygames(request):
 	currentuser = request.user
 	order_by_name = request.GET.get('order_by', 'game__name')
-	order_by_developer = request.GET.get('order_by', 'game__developer')
+	order_by_developer = request.GET.get('order_by', 'dev__username')
 	order_by_released = request.GET.get('order_by', 'game__released')
-	owned_games = Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)
+	owned_games = Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)	
 	response = TemplateResponse(request, 'mygames.html', {'owned_games': owned_games, 'order_by_name': order_by_name,
 													      'order_by_developer': order_by_developer,
 													      'order_by_released': order_by_released})
@@ -246,4 +246,3 @@ def newgames(request):
 	response = TemplateResponse(request, 'index.html', {'games': games})
 	response.render()
 	return response
-

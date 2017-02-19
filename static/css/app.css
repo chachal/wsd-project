@@ -60,12 +60,12 @@ body {
   background-color: #2f2f2f;
 }
 
-p, td, li, th, td {
+p, td, li, td {
   color: #cecece;
   font-weight: lighter;
 }
 
-a {
+a, th {
   font-weight: bold;
   color: #cecece;
 }
