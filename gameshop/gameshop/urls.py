@@ -27,6 +27,7 @@ urlpatterns = [
 	url(r'^register/$', shopviews.register),
 	url(r'^login', shopviews.login, name='login'),
 	url(r'^logout/$', shopviews.logout, name='logout'),
-	url(r'^game/$', shopviews.game, name='mygame')
+	url(r'^game/$', shopviews.game, name='mygame'),
+    url(r'^search/$', shopviews.results, name='results')
 
 ]

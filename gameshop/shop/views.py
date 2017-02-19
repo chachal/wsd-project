@@ -117,3 +117,17 @@ def game(request):
 	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned})
 	response.render()
 	return response
+
+def results(request):
+	searchterms = request.GET.get('q')
+	terms = searchterms.split()
+	games = Games.objects.all()
+	results = []
+	for game in games:
+		for term in terms:
+			if term in game.name:
+				results.append(game)
+				break
+	response = TemplateResponse(request, 'results.html', {'results': results})
+	response.render()
+	return response
