@@ -3,7 +3,9 @@
 {% block page_content %}
 <script>
   function resizeIframe(obj) {
-    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    //obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+    obj.style.height = "640px";
+    obj.style.width = "480px";
   }
 </script>
 
@@ -30,10 +32,10 @@
 
   <p>You are now playing " {{ game.name }} "</p>
 
-    <iframe src= {{ game.url }} id="game" frameborder="0" scrolling="no" onload="resizeIframe(this)" >
+    <iframe style="background:white;float:left;" src= {{ game.url }} id="game" frameborder="0" scrolling="no" onload="resizeIframe(this)">
     </iframe>
 
-    <table id="highscores">
+    <table id="highscores" style="float:right;">
       <tr>
         <th class="highscore">Player</th>
         <th class="highscore">Highscore</th>
