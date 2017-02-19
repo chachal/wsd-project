@@ -1,0 +1,20 @@
+{% extends 'admin_base.html' %}
+{% block admin_content %}
+
+<h2>Sales for: {{ game.name }}</h2>
+<span>Total sales: {{ total }}</br></span>
+<span>Price: {{ game.price }} $</br></span>
+<span>Total revenue: {{ revenue }} $</br></br></span>
+  <table style="width:100%">
+    <tr>
+      <td><b>Date:</b></td>
+      <td><b>Buyer:</b></td>
+    </tr>
+    {% for row in purchases %}
+      <tr>
+        <td>{{ row.date }}</td>
+        <td>{{ row.owner.username }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

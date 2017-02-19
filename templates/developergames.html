@@ -5,11 +5,13 @@
     <table style="width:100%">
       <tr>
         <th>Name</th>
+        <th></th>
         <th>Price</th>
       </tr>
       {% for game in games %}
       <tr>
         <td>{{ game.name}}</td>
+        <td><a href="/developer/statistics/?gameid={{ game.id }}">Sales info</a></td>
         <td>{{ game.price}}</td>
         <td>{{count}}</td>
         <td><button type="submit" name="gameid" value="{{ game.id }}" onclick="confirm('Delete game?')">Delete</button></td>

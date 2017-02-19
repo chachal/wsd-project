@@ -180,9 +180,13 @@ def developergames(request):
 		
 
 def statistics(request):
+	gameid = request.GET['gameid']
 	cur_user = request.user
-	games = Games.objects.filter(dev__id = cur_user.id)
-	response = TemplateResponse(request, 'admin_base.html', {'games':games})
+	game = Games.objects.get(id=gameid)
+	purchases = Purchased.objects.filter(game_id=gameid)
+	total = len(purchases)
+	revenue = total*game.price
+	response = TemplateResponse(request, 'developerstats.html', {'purchases':purchases,'total':total,'game':game,'revenue':revenue})
 	response.render()
 	return response
 
