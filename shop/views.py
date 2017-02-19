@@ -7,10 +7,6 @@ from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
 from shop.forms import AddUserForm, LoginForm
-<<<<<<< HEAD:gameshop/shop/views.py
-
-=======
->>>>>>> master:shop/views.py
 from django.core import mail
 from django.core.signing import Signer
 from shop.util import check_developer, check_admin
