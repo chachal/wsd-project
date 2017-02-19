@@ -7,7 +7,10 @@ from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
 from shop.forms import AddUserForm, LoginForm
+<<<<<<< HEAD:gameshop/shop/views.py
 
+=======
+>>>>>>> master:shop/views.py
 from django.core import mail
 from django.core.signing import Signer
 from shop.util import check_developer, check_admin
@@ -103,23 +106,42 @@ def list_scores(request, gameID="1"):
 	response.render()
 	return response
 
-def game(request, gameID="1"):
+def game(request):
+	gameID = request.GET['gameID']
+	owned = False
 	currentuser = request.user
 	purchased = Purchased.objects.filter(owner__id=currentuser.id)
-	game = Games.objects.filter(id=gameID)
+	game = Games.objects.get(id=gameID)
 	scores = Scores.objects.filter(game__id=gameID)
 	users = User.objects.all()
 	scorelist = []
-	n = 0
+	for entry in purchased:
+		if game == purchased.game:
+			owned = True
+			break
 	for user in users:
-		scorelist.append([])
-		scorelist[n].append(user.username)
+		userscore = []
+		userscore.append(user.username)
 		for score in scores:
 			if score.user == user:
-				scorelist[n].append(score.score)
-		n = n +1
-	scorelist = sorted(scorelist, key=lambda points: points[0], reverse=True)
-	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'currentuser': currentuser, 'purchased': purchased})
+				userscore.append(score.score)
+		scorelist.append(userscores)
+	scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
+	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned})
+	response.render()
+	return response
+
+def results(request):
+	searchterms = request.GET.get('q')
+	terms = searchterms.split()
+	games = Games.objects.all()
+	results = []
+	for game in games:
+		for term in terms:
+			if term in game.name:
+				results.append(game)
+				break
+	response = TemplateResponse(request, 'results.html', {'results': results})
 	response.render()
 	return response
 

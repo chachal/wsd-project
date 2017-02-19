@@ -44,6 +44,12 @@
             <li><a href="/developer">Developer Tools</a></li>
             {% endif %}
           </ul>
+          <form id="searchform" action="{% url 'results' %}" method="get" accept-charset="utf-8">
+            <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Search for games">
+            <button class="searchbutton" type="submit">Go!
+            <i class="fa fa-search"></i>
+            </button>
+          </form>
           <ul id="login-nav" class="nav navbar-nav navbar-right">
             {% if not user.is_authenticated %}
             <li><a href="/login">Login</a></li>

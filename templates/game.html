@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block page_content %}
+<script>
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+  }
+</script>
+
+  {% if owned != True %}
+
+   <p> You have not purchased this game. </p>
+
+{% comment %}
+  {% else %}
+{% endcomment %}
+
+  <h2>You are now playing " {{ game.name }} "</h2>
+
+    <iframe src= {{ game.url }} frameborder="0" scrolling="no" onload="resizeIframe(this)" ></iframe>
+    <div class="div-table">
+      <div class="div-table-row div-table-heading">
+      <div style="width: 60%">Player</div>
+      <div style="width: 40%">Highscore</div>
+    </div>
+
+    {% for userscore in userscores %}
+      <div class="div-table-row">
+        <div style="width: 60%">{{ userscore.0 }}</div>
+        <div style="width: 40%">{{ userscore.1 }}</div>
+      </div>
+    {% endfor %}
+  
+  {% endif %}
+
+{% endblock %}
