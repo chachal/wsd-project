@@ -87,9 +87,6 @@ DATABASES = {
     }
 }
 
-if "DYNO" in os.environ: # Only when running in Heroku
-    DATABASES['default'] = dj_database_url.config(conn_max_age=500)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -142,5 +139,5 @@ if "DYNO" in os.environ:
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
 
-    DEBUG = True # False, once service is succesfully deployed
+    DEBUG = False # False, once service is succesfully deployed
     ALLOWED_HOSTS = ['*']
