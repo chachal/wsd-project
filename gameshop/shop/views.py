@@ -69,8 +69,6 @@ def list_users(request):
 	response = TemplateResponse(request, 'admin_userlist.html', {'users': users})
 	response.render()
 	return reponse
-
-def list_games(request):
 	order_by = request.GET.get('order_by', 'name')
 	games = Games.objects.all().order_by(order_by)
 	response = TemplateResponse(request, 'gamelist.html', {'games': games})
