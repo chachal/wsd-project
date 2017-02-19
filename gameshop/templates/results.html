@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block page_content %}
+
+  <h2>Games you might be looking for:</h2>
+
+    {% for result in results %}
+	<a href="http://127.0.0.1:8000/game/?gameID={{ result.id }}"> {{ result.name }} </a>
+    {% endfor %}
+
+{% endblock %}
