@@ -2,9 +2,9 @@ WSD Project plan
 ================
 
 ### 1. Team ###
-481548 Aku Viitanen 
-528375 Charlotta Alén 
-426396 Antti Mella 
+481548 Aku Viitanen  
+528375 Charlotta Alén  
+426396 Antti Mella  
 
 ### 2. Goal ###
 Goal of this project is to build a game store service, 
@@ -83,3 +83,17 @@ get right from the beginning are the database models. Most
 of the work relies on them and thus they finding problems 
 in them at the last minutes can cause majoe haulovers 
 across the board.
+
+### 7. Report ###
+481548 Aku Viitanen  
+528375 Charlotta Alén  
+426396 Antti Mella  
+  
+We were able to implement most of the basic functionality, but due to our busy schedules we didnt magane to implement proper security restrictions to all views(the test functions for it exist). Our most complete part is the authentication, which uses gmail to send out activation links. Our users can buy and play games, but the messaging interaction is unimplemented. Developers can add and delete games as well as see sales transactions log.
+
+All of us worked on all the things but biggest responsibilities were:  
+Aku - Authentication  
+Antti - Developer tools  
+Charlotta - Front end  
+
+

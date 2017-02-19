@@ -45,7 +45,7 @@ def register(request):
 			signer = Signer()
 			signed_value = signer.sign(user_form.cleaned_data['username'])
 			key = ''.join(signed_value.split(':')[1:])
-			url = 'http://127.0.0.1:8000/confirmation/?code=' + key
+			url = 'https://aqueous-brook-23280.herokuapp.com/confirmation/?code=' + key
 			with mail.get_connection() as connection:
 				mail.EmailMessage('Registration confirmation', url, to=[user_form.cleaned_data['email']]).send()
 			user = user_form.save(key, user_form.cleaned_data['role'])
