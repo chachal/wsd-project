@@ -33,4 +33,5 @@ urlpatterns = [
 	url(r'^developer/statistics', shopviews.statistics, name='developer'),
 	url(r'^search/$', shopviews.results, name='results'),
     url(r'^shop/$', shopviews.shop, name='shop'),
+    url(r'^mygames/$', shopviews.mygames, name='mygames')
 ]
