@@ -122,3 +122,28 @@ def game(request, gameID="1"):
 	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'currentuser': currentuser, 'purchased': purchased})
 	response.render()
 	return response
+
+def developer(request):
+	response = TemplateResponse(request, 'admin_base.html')
+	response.render()
+	return response
+
+def addgame(request):
+	response = TemplateResponse(request, 'admin_base.html')
+	response.render()
+	return response
+
+def developergames(request):
+
+	cur_user = request.user
+	games = Games.objects.filter(dev__id = cur_user.id)
+	response = TemplateResponse(request, 'developergames.html', {'games':games})
+	response.render()
+	return response
+
+def statistics(request):
+	cur_user = request.user
+	games = Games.objects.filter(dev__id = cur_user.id)
+	response = TemplateResponse(request, 'admin_base.html', {'games':games})
+	response.render()
+	return response
