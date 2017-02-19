@@ -50,7 +50,7 @@ def register(request):
 			user = user_form.save(key, user_form.cleaned_data['role'])
 			return redirect('index')
 
-			
+
 	else:
     		user_form = AddUserForm()
 
@@ -152,7 +152,6 @@ def addgame(request):
 	return response
 
 def developergames(request):
-
 	cur_user = request.user
 	games = Games.objects.filter(dev__id = cur_user.id)
 	response = TemplateResponse(request, 'developergames.html', {'games':games})
