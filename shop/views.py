@@ -121,8 +121,9 @@ def game(request):
 		for score in scores:
 			if score.user == user:
 				userscore.append(score.score)
-		scorelist.append(userscores)
-	scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
+		scorelist.append(userscore)
+	if len(userscore) > 1:
+		scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
 	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned})
 	response.render()
 	return response
@@ -168,5 +169,30 @@ def statistics(request):
 	cur_user = request.user
 	games = Games.objects.filter(dev__id = cur_user.id)
 	response = TemplateResponse(request, 'admin_base.html', {'games':games})
+	response.render()
+	return response
+
+def shop(request):
+	order_by_name = request.GET.get('order_by', 'name')
+	order_by_price = request.GET.get('order_by', 'price')
+	order_by_developer = request.GET.get('order_by', 'developer')
+	order_by_released = request.GET.get('order_by', 'released')
+	games = Games.objects.all().order_by(order_by_name)
+	response = TemplateResponse(request, 'shop.html', {'games': games, 'order_by_name': order_by_name,
+													   'order_by_price': order_by_price,
+													   'order_by_developer': order_by_developer,
+													   'order_by_released': order_by_released})
+	response.render()
+	return response
+
+def mygames(request):
+	currentuser = request.user
+	order_by_name = request.GET.get('order_by', 'name')
+	order_by_developer = request.GET.get('order_by', 'developer')
+	order_by_released = request.GET.get('order_by', 'released')
+	owned_games = Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)
+	response = TemplateResponse(request, 'mygames.html', {'owned_games': owned_games, 'order_by_name': order_by_name,
+													      'order_by_developer': order_by_developer,
+													      'order_by_released': order_by_released})
 	response.render()
 	return response
