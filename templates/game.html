@@ -7,13 +7,6 @@
   }
 </script>
 
-var score = document.getElementById
-function receiveMessage(event) {
-  if (event.origin === game.url){
-
-  }
-}
-
   {% if owned != True %}
 
    <p> You have not purchased this game. </p>
@@ -24,12 +17,16 @@ function receiveMessage(event) {
 
   <h2>You are now playing " {{ game.name }} "</h2>
 
-    <iframe src= {{ game.url }} name="game" frameborder="0" scrolling="no" onload="resizeIframe(this)" ></iframe>
+    <iframe src= {{ game.url }} name="game" frameborder="0" scrolling="no" onload="resizeIframe(this)" >
+    </iframe>
+
     <div class="div-table">
       <div class="div-table-row div-table-heading">
       <div style="width: 60%">Player</div>
       <div style="width: 40%">Highscore</div>
     </div>
+
+    <button id=test>Test</button>
 
     {% for userscore in userscores %}
       <div class="div-table-row">

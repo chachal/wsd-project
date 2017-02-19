@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'gameshopwsd@gmail.com'
+EMAIL_HOST_PASSWORD = 'akuantticharlotta'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Application definition
 
@@ -82,9 +87,6 @@ DATABASES = {
     }
 }
 
-if "DYNO" in os.environ: # Only when running in Heroku
-    DATABASES['default'] = dj_database_url.config(conn_max_age=500)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -130,3 +132,12 @@ STATICFILES_DIRS = [
 ]
 
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+# Only when running in Heroku
+if "DYNO" in os.environ:
+    STATIC_ROOT = 'staticfiles'
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
+
+    DEBUG = False # False, once service is succesfully deployed
+    ALLOWED_HOSTS = ['*']

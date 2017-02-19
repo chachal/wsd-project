@@ -7,6 +7,7 @@ class UserProfile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	role = models.CharField(max_length=9, default="user")
 	credit = models.IntegerField(default=0)
+	confcode = models.CharField(max_length=200, default=None, null=True)
 	def __str__(self):
         	return u'%s %s' % (self.user.name)
 

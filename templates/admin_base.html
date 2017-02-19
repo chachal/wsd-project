@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block page_content %}
+
+  <div class="row">
+    <div class="col-sm-3 col-lg-2">
+      <nav class="navbar navbar-default navbar-fixed-side"  style="padding-top:10px;">
+        <ul>
+          <li><a href="/developer/addgame">Add Game</a></li>
+	
+          <li><a href="/developer/yourgames">Your games</a></li>
+          <li><a href="/developer/statistics">Statistics</a></li>
+        </ul>
+      </nav>
+    </div>
+      <div class="col-lg-10 cold-md-10 col-xs-9">
+      <p>test</p>
+      {% block admin_content %}{% endblock %}
+    </div>
+  </div>
+
+
+{% endblock %}

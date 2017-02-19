@@ -22,12 +22,14 @@ urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 	url(r'^$', shopviews.index, name='index'),
 	url(r'^scores/$', shopviews.list_scores, name='scores'),
-	url(r'^mygames/$', shopviews.mygames, name='mygames'),
-	url(r'^shop/$', shopviews.shop, name='shop'),
 	url(r'^register/$', shopviews.register),
 	url(r'^login', shopviews.login, name='login'),
 	url(r'^logout/$', shopviews.logout, name='logout'),
+	url(r'^confirmation/$', shopviews.confirmation, name='confirmation'),
 	url(r'^game/$', shopviews.game, name='mygame'),
-    url(r'^search/$', shopviews.results, name='results')
-
+	url(r'^developer/$', shopviews.developer, name='developer'),
+	url(r'^developer/yourgames', shopviews.developergames, name='developer'),
+	url(r'^developer/addgame', shopviews.addgame, name='developer'),
+	url(r'^developer/statistics', shopviews.statistics, name='developer'),
+	url(r'^search/$', shopviews.results, name='results'),
 ]
