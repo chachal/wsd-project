@@ -14,7 +14,7 @@
       <tr>
         <td>{{ game.name}}</td>
         <td>{{ game.price}}</td>
-        <td>{{}}</td>
+        <td>{{count}}</td>
         <td><button type="submit" name="event_id" value="{{ game.id }}" onclick="confirm('Do you want to delete the event')">Delete</button></td>
       </tr>
       {% endfor %}

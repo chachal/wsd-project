@@ -6,7 +6,7 @@ from django.db.models import Q, Count, Sum
 from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
-from shop.forms import AddUserForm, LoginForm
+from shop.forms import AddUserForm, LoginForm, Addgameform
 from django.core import mail
 from django.core.signing import Signer
 from shop.util import check_developer, check_admin
@@ -147,9 +147,15 @@ def developer(request):
 	return response
 
 def addgame(request):
-	response = TemplateResponse(request, 'admin_base.html')
-	response.render()
-	return response
+	if request.method == 'POST':
+		form = Addgameform(request.POST, user=request.user)
+		if form.is_valid():
+			form.save()
+			return redirect(developergames)
+	else:
+		form = Addgameform(user=request.user)
+
+	return render(request, 'addgame.html', {'form': form,})
 
 def developergames(request):
 	cur_user = request.user

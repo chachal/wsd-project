@@ -1,0 +1,12 @@
+{% extends 'admin_base.html' %}
+{% block admin_content %}
+
+  {% block addgame %}
+    <form method="POST" action="/developer/addgame/">
+      {% csrf_token %}
+      {{form.as_p}}
+      <input type="submit" value="AddGame">
+  </form>
+  {% endblock%}
+
+{% endblock %}

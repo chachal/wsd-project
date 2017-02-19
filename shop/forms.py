@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
+from shop.models import Games
 
 class AddUserForm(ModelForm):
     role_choices = (('user', 'user'), ('developer', 'developer'))
@@ -34,4 +35,20 @@ class LoginForm(forms.Form):
     username = forms.CharField(max_length=100, required=True, label="Username")
     password = forms.CharField(widget=forms.PasswordInput(), label="Password")
 
+class Addgameform(ModelForm):
 
+    class Meta:
+        model = Games
+        fields = ('name', 'price', 'url')
+
+    def __init__(self, *args, **kwargs):
+        self._user = kwargs.pop('user')
+        super(Addgameform, self).__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        inst = super(Addgameform, self).save(commit=False)
+        inst.dev = self._user
+        if commit:
+            inst.save()
+            self.save_m2m()
+        return inst
