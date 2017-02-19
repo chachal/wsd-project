@@ -196,3 +196,10 @@ def mygames(request):
 													      'order_by_released': order_by_released})
 	response.render()
 	return response
+
+def newgames(request):
+	order_by = request.GET.get('order_by', 'released')
+	games = Games.objects.all(released__year=today.year, released__month=today.month).order_by(order_by)
+	response = TemplateResponse(request, 'index.html', {'games': games})
+	response.render()
+	return response

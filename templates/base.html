@@ -39,14 +39,14 @@
             <li><a href="/mygames">My Games</a></li>
             {% endif %}
             <li><a href="/shop">Shop</a></li>
-            {% if user.is_superuser or user.profile.role == 'developer' or user.role == 'admin' %}
-            <li><a href="/developer">Developer Tools</a></li>
-            {% endif %}
             <li>  <form id="searchform" action="{% url 'results' %}" method="get" accept-charset="utf-8">
                 <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Search for games">
                 <button class="searchbutton" type="submit">Go!
                 <i class="fa fa-search"></i>
               </button></li>
+            {% if user.is_superuser or user.profile.role == 'developer' or user.role == 'admin' %}
+            <li><a href="/developer">Developer Tools</a></li>
+            {% endif %}
           </ul>
 
           </form>

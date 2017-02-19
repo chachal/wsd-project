@@ -2,22 +2,23 @@
 {% load i18n %}
 {% block page_content %}
 
-  <h2>New games</h2>
-
-
   {% if not user.is_authenticated %}
-    <p>Please log in to use your games and shop!<p>
-  {% endif %}
+    <p>Please log in to play your games and shop!<p>
 
-  {% for game in games %}
+  {% else %}
+  <p>New this month:</p>
+  <table style="width:100%">
+    <tr>
+      <th id="tabletitle">Game</th>
+      <th id="tabletitle">Released</th>
+    </tr>
+    {% for game in games %}
+    <tr>
+      <td><a href="http://127.0.0.1:8000/game?gameID={{ game.id }}">{{ game.name}}</a></td>
+      <td>{{ game.released}}</td>
+    </tr>
+    {% endfor %}
+  </table>
 
-    {% if forloop.counter|divisibleby:"4" %}
-      <div class="row">
-    {% endif %}
-    <div class="col"><p>asdsadsa</p></div>
-    {% if forloop.counter|divisibleby:"4" %}
-      </div>
-    {% endif %}
-  {% endfor %}
-
+{% endif %}
 {% endblock %}
