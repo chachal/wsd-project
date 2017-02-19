@@ -170,3 +170,6 @@ def statistics(request):
 	response = TemplateResponse(request, 'admin_base.html', {'games':games})
 	response.render()
 	return response
+
+def shop(request):
+	

@@ -32,4 +32,5 @@ urlpatterns = [
 	url(r'^developer/addgame', shopviews.addgame, name='developer'),
 	url(r'^developer/statistics', shopviews.statistics, name='developer'),
 	url(r'^search/$', shopviews.results, name='results'),
+    url(r'^shop/$', shopviews.results, name='shop'),
 ]
