@@ -189,6 +189,7 @@ def shop(request):
 	response.render()
 	return response
 
+
 def paysuccess(request):
 	pid = request.GET['pid']
 	ref = request.GET['ref']
@@ -215,3 +216,23 @@ def paycancel(request):
 def payfail(request):
 	return HttpResponse("404")
 	
+
+def mygames(request):
+	currentuser = request.user
+	order_by_name = request.GET.get('order_by', 'name')
+	order_by_developer = request.GET.get('order_by', 'developer')
+	order_by_released = request.GET.get('order_by', 'released')
+	owned_games = Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)
+	response = TemplateResponse(request, 'mygames.html', {'owned_games': owned_games, 'order_by_name': order_by_name,
+													      'order_by_developer': order_by_developer,
+													      'order_by_released': order_by_released})
+	response.render()
+	return response
+
+def newgames(request):
+	order_by = request.GET.get('order_by', 'released')
+	games = Games.objects.all(released__year=today.year, released__month=today.month).order_by(order_by)
+	response = TemplateResponse(request, 'index.html', {'games': games})
+	response.render()
+	return response
+

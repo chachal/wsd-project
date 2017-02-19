@@ -36,5 +36,6 @@ urlpatterns = [
 	url(r'^payment/success?/$', shopviews.paysuccess, name='paysuccess'),
 	url(r'^payment/cancel?/$', shopviews.paycancel, name='paycancel'),
 	url(r'^payment/fail?/$', shopviews.payfail, name='payfail'),
-
+    url(r'^shop/$', shopviews.shop, name='shop'),
+    url(r'^mygames/$', shopviews.mygames, name='mygames')
 ]

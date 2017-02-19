@@ -18,3 +18,12 @@
   margin: 0;
   padding: 0;
 }
+
+#searchform {
+  margin-top: 12px
+}
+
+#tabletitle {
+  font-size: 15pt
+  color: green
+}
