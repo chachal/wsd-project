@@ -10,6 +10,7 @@ from shop.forms import AddUserForm, LoginForm, Addgameform
 from django.core import mail
 from django.core.signing import Signer
 from shop.util import check_developer, check_admin
+from hashlib import md5
 
 from django.contrib.auth.models import User
 
@@ -112,7 +113,7 @@ def game(request):
 	users = User.objects.all()
 	scorelist = []
 	for entry in purchased:
-		if game == purchased.game:
+		if game == entry.game:
 			owned = True
 			break
 	for user in users:
@@ -124,7 +125,13 @@ def game(request):
 		scorelist.append(userscore)
 	if len(userscore) > 1:
 		scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
-	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned})
+
+	pid = "{}:{}".format(currentuser.id, game.id)
+	checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, "GameshopAAC", game.price, "c858a84d04755915ded5daba44a3644f")
+	m = md5(checksumstr.encode("ascii"))
+	checksum = m.hexdigest()
+
+	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned, 'checksum':checksum, 'pid':pid})
 	response.render()
 	return response
 
@@ -178,9 +185,33 @@ def shop(request):
 	order_by_developer = request.GET.get('order_by', 'developer')
 	order_by_released = request.GET.get('order_by', 'released')
 	games = Games.objects.all().order_by(order_by_name)
-	response = TemplateResponse(request, 'shop.html', {'games': games, 'order_by_name': order_by_name,
-													   'order_by_price': order_by_price,
-													   'order_by_developer': order_by_developer,
-													   'order_by_released': order_by_released})
+	response = TemplateResponse(request, 'shop.html', {'games': games, 'order_by_name': order_by_name,'order_by_price': order_by_price,'order_by_developer': order_by_developer,'order_by_released': order_by_released})
 	response.render()
 	return response
+
+def paysuccess(request):
+	pid = request.GET['pid']
+	ref = request.GET['ref']
+	result = request.GET['result']
+	checksum = request.GET['checksum']
+	
+	checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, ref, result, "c858a84d04755915ded5daba44a3644f")
+	m = md5(checksumstr.encode("ascii"))
+	checksumlocal = m.hexdigest()
+
+	#if checksum == checksumlocal:
+	userid,gameid = pid.split(":")
+	user = User.objects.get(id=userid)
+	purchasedgame = Games.objects.get(id=gameid)
+	p = Purchased(owner=user, game=purchasedgame, active=True)
+	p.save()
+	return redirect('/game/?gameID='+gameid)
+	#else:
+	#	return HttpResponse("404")
+	
+def paycancel(request):
+	return HttpResponse("404")
+	
+def payfail(request):
+	return HttpResponse("404")
+	
