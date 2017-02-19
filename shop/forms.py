@@ -52,3 +52,4 @@ class Addgameform(ModelForm):
             inst.save()
             self.save_m2m()
         return inst
+

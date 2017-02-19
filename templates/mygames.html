@@ -8,7 +8,7 @@
     <th style="width:25%" class="tabletitle"><a href="?order_by=developer">Developer</a></th>
     <th style="width:10%" class="tabletitle"><a href="?order_by=released">Released</a></th>
   </tr>
-  {% for game in games %}
+  {% for game in owned_games %}
   <tr>
     <td><a href="http://127.0.0.1:8000/game?gameID={{ game.id }}">{{ game.name}}</a></td>
     <td>{{ game.dev}}</td>

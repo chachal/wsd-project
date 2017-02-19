@@ -28,10 +28,14 @@ urlpatterns = [
 	url(r'^confirmation/$', shopviews.confirmation, name='confirmation'),
 	url(r'^game/$', shopviews.game, name='mygame'),
 	url(r'^developer/$', shopviews.developer, name='developer'),
-	url(r'^developer/yourgames', shopviews.developergames, name='developer'),
-	url(r'^developer/addgame', shopviews.addgame, name='developer'),
-	url(r'^developer/statistics', shopviews.statistics, name='developer'),
+	url(r'^developer/yourgames/$', shopviews.developergames, name='developer'),
+	url(r'^developer/addgame/$', shopviews.addgame, name='developer'),
+	url(r'^developer/statistics/$', shopviews.statistics, name='developer'),
 	url(r'^search/$', shopviews.results, name='results'),
+	url(r'^shop/$', shopviews.shop, name='shop'),
+	url(r'^payment/success?/$', shopviews.paysuccess, name='paysuccess'),
+	url(r'^payment/cancel?/$', shopviews.paycancel, name='paycancel'),
+	url(r'^payment/fail?/$', shopviews.payfail, name='payfail'),
     url(r'^shop/$', shopviews.shop, name='shop'),
     url(r'^mygames/$', shopviews.mygames, name='mygames')
 ]

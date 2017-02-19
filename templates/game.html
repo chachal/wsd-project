@@ -9,11 +9,24 @@
 
   {% if owned != True %}
 
-   <p> You have not purchased this game. </p>
+   <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+    <input type="hidden" name="pid" value="{{ pid }}" />
+    <input type="hidden" name="sid" value="GameshopAAC" />
+    <input type="hidden" name="success_url"
+            value="http://127.0.0.1:8000/payment/success" />
+    <input type="hidden" name="cancel_url"
+            value="http://127.0.0.1:8000/payment/cancel" />
+    <input type="hidden" name="error_url"
+            value="http://127.0.0.1:8000/payment/error" />
+    <input type="hidden" name="checksum"
+            value="{{ checksum }}" />
+    <input type="hidden" name="amount" value="{{ game.price }}"/>
 
-{% comment %}
+    <p>Purchase this game for {{game.price}}</p>
+    <input type="submit" value="Accept Payment"/>
+</form>
+
   {% else %}
-{% endcomment %}
 
   <p>You are now playing " {{ game.name }} "</p>
 
@@ -25,14 +38,15 @@
         <th class="highscore">Player</th>
         <th class="highscore">Highscore</th>
       </tr>
-
     {% for userscore in userscores %}
       <tr class="highscore">
         <td>{{ userscore.0 }}</td>
         <td>{{ userscore.1 }}</td>
       </tr>
     {% endfor %}
+
   </table>
   {% endif %}
+
 
 {% endblock %}
