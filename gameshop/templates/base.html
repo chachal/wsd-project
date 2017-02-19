@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  {% load static %}
+{% load static %}
 {% load i18n %}
   <head>
     <meta charset="utf-8">
@@ -40,6 +40,9 @@
             <li><a href="/mygames">My Games</a></li>
             {% endif %}
             <li><a href="/shop">Shop</a></li>
+            {% if user.is_superuser or user.profile.role == 'developer' or user.role == 'admin' %}
+            <li><a href="/developer">Developer Tools</a></li>
+            {% endif %}
           </ul>
           <ul id="login-nav" class="nav navbar-nav navbar-right">
             {% if not user.is_authenticated %}

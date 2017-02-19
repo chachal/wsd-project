@@ -8,16 +8,16 @@ class UserProfile(models.Model):
 	role = models.CharField(max_length=9, default="user")
 	credit = models.IntegerField(default=0)
 	confcode = models.CharField(max_length=200, default=None, null=True)
-	def __str__(self):
-        	return u'%s %s' % (self.user.name)
+def __str__(self):
+	return u'%s %s' % (self.user.name)
 
-	User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
-	def create_user_profile(sender, instance, created, **kwargs):
-		if created:
-			UserProfile.objects.create(user=instance)
+def create_user_profile(sender, instance, created, **kwargs):
+	if created:
+		UserProfile.objects.create(user=instance)
 
-			post_save.connect(create_user_profile, sender=User)
+		post_save.connect(create_user_profile, sender=User)
 
 class Games(models.Model):
 	name = models.CharField(max_length = 30, unique=True)

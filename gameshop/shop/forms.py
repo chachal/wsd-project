@@ -14,10 +14,11 @@ class AddUserForm(ModelForm):
         model = User
         fields = ('username', 'password', 'role', 'first_name', 'last_name', 'email')
 
-    def save(self,key, commit = True):
+    def save(self,key, role, commit = True):
         user = super(AddUserForm, self).save(commit = True)
         user_profile = user.profile
         user_profile.confcode = key
+        user_profile.role = role
         user_profile.save()
         user.set_password(user.password)
         user.is_active = False
