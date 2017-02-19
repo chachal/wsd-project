@@ -7,11 +7,11 @@
 
   {% else %}
   <p>New games this month:</p>
-  <table style="width:40%">
+  <table style="width:45%">
     {% for game in games %}
     <tr>
       <td style="width:30%"><a href="http://127.0.0.1:8000/game?gameID={{ game.id }}">{{ game.name}}</a></td>
-      <td style="width:10%">{{ game.released}}</td>
+      <td style="width:15%">{{ game.released}}</td>
     </tr>
     {% endfor %}
   </table>
