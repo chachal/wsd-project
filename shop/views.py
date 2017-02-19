@@ -163,7 +163,13 @@ def addgame(request):
 	else:
 		form = Addgameform(user=request.user)
 
-	return render(request, 'addgame.html', {'form': form,})
+	return render(request, 'addgame.html', {'form': form})
+
+def deletegame(request):
+	gameid = request.POST['gameid']
+	game = Games.objects.get(id=gameid)
+	game.delete()
+	return redirect('developergames')
 
 def developergames(request):
 	cur_user = request.user
@@ -171,6 +177,7 @@ def developergames(request):
 	response = TemplateResponse(request, 'developergames.html', {'games':games})
 	response.render()
 	return response
+		
 
 def statistics(request):
 	cur_user = request.user
