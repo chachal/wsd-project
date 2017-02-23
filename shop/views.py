@@ -233,10 +233,8 @@ def mygames(request):
 	order_by_name = request.GET.get('order_by', 'game__name')
 	order_by_developer = request.GET.get('order_by', 'dev__username')
 	order_by_released = request.GET.get('order_by', 'game__released')
-	owned_games = Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)	
-	response = TemplateResponse(request, 'mygames.html', {'owned_games': owned_games, 'order_by_name': order_by_name,
-													      'order_by_developer': order_by_developer,
-													      'order_by_released': order_by_released})
+	owned_games = Games.objects.filter(id__in=(Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)))
+	response = TemplateResponse(request, 'mygames.html', {'owned_games': owned_games})
 	response.render()
 	return response
 
