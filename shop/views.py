@@ -100,7 +100,7 @@ def list_purchased(request, userID="1"):
 def getScores(request):
 	import json
 	gameID = request.GET['gameID']
-	scores = Scores.objects.filter(game__id=gameID)
+	scores = Scores.objects.filter(game__id=gameID).order_by('-score')[:10]
 	jsonresult = json.dumps(list(scores.values('user_id', 'score')))
 	return HttpResponse(jsonresult)
 
@@ -115,7 +115,6 @@ def game(request):
 		if game == entry.game:
 			owned = True
 			break
-
 	pid = "{}:{}".format(currentuser.id, game.id)
 	checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, "GameshopAAC", game.price, "c858a84d04755915ded5daba44a3644f")
 	m = md5(checksumstr.encode("ascii"))
