@@ -4,9 +4,50 @@
 <script>
   function resizeIframe(obj) {
     //obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-    obj.style.height = "640px";
-    obj.style.width = "480px";
+    obj.style.height = "480px";
+    obj.style.width = "640px";
   }
+
+  window.addEventListener("message", receiveMessage, false);
+
+  function receiveMessage(event){
+    var origin = event.origin || event.originalEvent.origin
+    if(origin !== "http://webcourse.cs.hut.fi"){
+      return;
+    }
+    if(event.data.messageType == "SCORE"){
+      getScores();
+    }
+    if(event.data.messageType == "SAVE"){
+      window.location.reload();
+    }
+    if(event.data.messageType == "LOAD_REQUEST"){
+      window.location.reload();
+    }
+    if(event.data.messageType == "LOAD"){
+      window.location.reload();
+    }
+    if(event.data.messageType == "ERROR"){
+      alert(event.data.info);
+    }
+    if(event.data.messageType == "SETTING"){
+      document.getElementById("game").width = event.data.options.width;
+      document.getElementById("game").height = event.data.options.height;
+      getScores();
+    }
+  
+  }
+  
+  function getScores(){
+    $.ajax({type:"GET",dataType:"json",url:"/getScores/?gameID={{game.id}}",success:function(data){
+      inputstr = "";  
+      for(index = 0; data.length - 1 >= index; ++index){
+        inputstr += '<tr><td class="highscore">' + data[index].user_id + '</td><td class="highscore">' + data[index].score + '</td></tr>';
+    }
+      document.getElementById("scoreboard").innerHTML = inputstr;
+    },
+  });
+}
 </script>
 
   {% if owned != True %}
@@ -32,21 +73,16 @@
 
   <p>You are now playing " {{ game.name }} "</p>
 
-    <iframe style="background:white;float:left;" src= {{ game.url }} id="game" frameborder="0" scrolling="no" onload="resizeIframe(this)">
+    <iframe style="background:white;float:left;margin:10px;" src= {{ game.url }} id="game" frameborder="0" scrolling="no">
     </iframe>
 
-    <table id="highscores" style="float:right;">
+    <table id="highscores" style="float:left;margin:10px;">
       <tr>
         <th class="highscore">Player</th>
         <th class="highscore">Highscore</th>
       </tr>
-    {% for userscore in userscores %}
-      <tr class="highscore">
-        <td>{{ userscore.0 }}</td>
-        <td>{{ userscore.1 }}</td>
-      </tr>
-    {% endfor %}
-
+      <tbody id=scoreboard>
+      </tbody>
   </table>
   {% endif %}
 

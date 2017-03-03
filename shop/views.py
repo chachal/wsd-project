@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q, Count, Sum
@@ -7,10 +7,11 @@ from django.template.response import TemplateResponse
 from django.template import RequestContext
 from shop.models import UserProfile, Games, Purchased, Scores
 from shop.forms import AddUserForm, LoginForm, Addgameform
-from django.core import mail
+from django.core import mail, serializers
 from django.core.signing import Signer
 from shop.util import check_developer, check_admin
 from hashlib import md5
+
 
 from django.contrib.auth.models import User
 
@@ -96,12 +97,12 @@ def list_purchased(request, userID="1"):
 	return response
 
 
-def list_scores(request, gameID="1"):
-	order_by = request.GET.get('order_by', 'score')
-	scores = Scores.objects.filter(game__id=gameID).order_by(order_by)
-	response = TemplateResponse(request, 'scores.html', {'scores': scores})
-	response.render()
-	return response
+def getScores(request):
+	import json
+	gameID = request.GET['gameID']
+	scores = Scores.objects.filter(game__id=gameID)
+	jsonresult = json.dumps(list(scores.values('user_id', 'score')))
+	return HttpResponse(jsonresult)
 
 def game(request):
 	gameID = request.GET['gameID']
@@ -109,29 +110,18 @@ def game(request):
 	currentuser = request.user
 	purchased = Purchased.objects.filter(owner__id=currentuser.id)
 	game = Games.objects.get(id=gameID)
-	scores = Scores.objects.filter(game__id=gameID)
-	users = User.objects.all()
 	scorelist = []
 	for entry in purchased:
 		if game == entry.game:
 			owned = True
 			break
-	for user in users:
-		userscore = []
-		userscore.append(user.username)
-		for score in scores:
-			if score.user == user:
-				userscore.append(score.score)
-		scorelist.append(userscore)
-	if len(userscore) > 1:
-		scorelist = sorted(scorelist, key=lambda points: points[1], reverse=True)
 
 	pid = "{}:{}".format(currentuser.id, game.id)
 	checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, "GameshopAAC", game.price, "c858a84d04755915ded5daba44a3644f")
 	m = md5(checksumstr.encode("ascii"))
 	checksum = m.hexdigest()
 
-	response = TemplateResponse(request, 'game.html', {'game': game,'highscores': scorelist, 'owned': owned, 'checksum':checksum, 'pid':pid})
+	response = TemplateResponse(request, 'game.html', {'game': game, 'owned': owned, 'checksum':checksum, 'pid':pid})
 	response.render()
 	return response
 
