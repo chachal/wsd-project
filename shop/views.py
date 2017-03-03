@@ -101,8 +101,25 @@ def getScores(request):
 	import json
 	gameID = request.GET['gameID']
 	scores = Scores.objects.filter(game__id=gameID).order_by('-score')[:10]
-	jsonresult = json.dumps(list(scores.values('user_id', 'score')))
+	users = UserProfile.objects.all()
+	jsonresult = json.dumps(list(scores.values('user__username', 'score')))
 	return HttpResponse(jsonresult)
+
+def setScores(request):
+	scores = request.GET['score']
+	gameID = request.GET['gameID']
+	cur_user = request.user
+	if Scores.objects.filter(Q(game__id=gameID) & Q(user__id=cur_user.id)).exists():
+		entry = Scores.objects.get(Q(game__id=gameID) & Q(user__id=cur_user.id))
+		if int(entry.score) < int(scores):
+			entry.score = scores
+			entry.save()
+		return HttpResponse()
+	gameDB = Games.objects.get(id=gameID)
+	entry = Scores(user=cur_user, game=gameDB, score=scores)
+	entry.save()
+	return HttpResponse()
+
 
 def game(request):
 	gameID = request.GET['gameID']

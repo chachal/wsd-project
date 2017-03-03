@@ -16,7 +16,8 @@
       return;
     }
     if(event.data.messageType == "SCORE"){
-      getScores();
+      setScores(event.data.score);
+      setTimeout(getScores, 1000);
     }
     if(event.data.messageType == "SAVE"){
       window.location.reload();
@@ -37,12 +38,15 @@
     }
   
   }
-  
+  function setScores(scores){
+    $.ajax({type:"GET",url:"/setScores/?gameID={{game.id}}&score=" + scores});
+  }
+
   function getScores(){
     $.ajax({type:"GET",dataType:"json",url:"/getScores/?gameID={{game.id}}",success:function(data){
       inputstr = "";  
       for(index = 0; data.length - 1 >= index; ++index){
-        inputstr += '<tr><td class="highscore">' + data[index].user_id + '</td><td class="highscore">' + data[index].score + '</td></tr>';
+        inputstr += '<tr><td class="highscore">' + data[index].user__username + '</td><td class="highscore">' + data[index].score + '</td></tr>';
     }
       document.getElementById("scoreboard").innerHTML = inputstr;
     },
