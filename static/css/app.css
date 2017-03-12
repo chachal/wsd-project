@@ -58,6 +58,11 @@ nav.navbar {
 
 body {
   background-color: #2f2f2f;
+  color: #cecece;
+}
+
+.header {
+  color: #cecece !important;
 }
 
 p, td, li, td {

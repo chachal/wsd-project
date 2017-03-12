@@ -1,10 +1,10 @@
 {% extends 'admin_base.html' %}
 {% block admin_content %}
 
-<h2>Sales for: {{ game.name }}</h2>
-<span>Total sales: {{ total }}</br></span>
-<span>Price: {{ game.price }} $</br></span>
-<span>Total revenue: {{ revenue }} $</br></br></span>
+<h2 id="sales">Sales for: {{ game.name }}</h2>
+<p>Total sales: {{ total }}</br>
+Price: {{ game.price }} $</br>
+Total revenue: {{ revenue }} $</br></br></p>
   <table style="width:100%">
     <tr>
       <td><b>Date:</b></td>
