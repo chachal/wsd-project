@@ -1,0 +1,158 @@
+<html>
+<head>
+  <title>Own Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    canvas {
+      border: 1px solid #d3d3d3;
+      background-color: #f1f1f1;
+    }
+  </style>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+
+</head>
+<body onload="startGame()">
+  <script>
+    var player;
+    var obstacle;
+    var score;
+    var paused;
+    function startGame() {
+      score = 0;
+      gameArea.start();
+      player = new component(30,30,"red",10,120);
+      obstacle = new component(30,30,"blue",gameArea.canvas.width-30,gameArea.canvas.height-30);
+      obstacle.vel = 4;
+      settingsmsg();
+      paused = false;
+    }
+
+    function restart() {
+      score = 0;
+      player.y = 120;
+      player.vel = 0;
+      obstacle.x = gameArea.canvas.width-30;
+      paused = false;
+      document.getElementById("score").innerHTML = "Score: " + score + "</br>";
+    }
+
+    var gameArea = {
+      canvas : document.createElement("canvas"),
+      start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.interval = setInterval(updateArea, 10);
+      },
+      clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+      
+    }
+  
+    function component(width, height, color, x, y) {
+      this.width = width;
+      this.height = height;
+      this.x = x;
+      this.y = y;
+      this.vel = 0;
+      this.update = function(){
+        ctx = gameArea.context;
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+    function updateArea(){
+      $(window).keypress(function (e){
+        if ((e.charCode === 0 || e.charCode === 32) && player.y > gameArea.canvas.height-31){
+          player.y = gameArea.canvas.height-32;
+          player.vel = -4;
+        }
+        if ((e.charCode === 114)){
+          restart();
+        }
+        if ((e.charCode === 115)){
+          save();
+        }
+        if ((e.charCode === 108)){
+          loadrequest();
+        }
+      });
+      if(!paused){
+        gameArea.clear();
+        player.vel += 0.1;
+        if (player.y > gameArea.canvas.height-32){
+          player.vel = 0;
+          player.y = gameArea.canvas.height-30;
+          $(window).keypress(function (e){
+            if ((e.charCode === 0 || e.charCode === 32) && player.y > gameArea.canvas.height-31){
+              player.y = gameArea.canvas.height-32;
+              player.vel = -4;
+            }
+          });
+        }
+
+        player.y = player.y + player.vel;
+        player.update();
+        if (obstacle.x < -30){
+          obstacle.x = gameArea.canvas.width;
+          score += 1;
+          document.getElementById("score").innerHTML = "Score: " + score;
+        }
+        obstacle.x -= obstacle.vel;
+        obstacle.update();
+      
+        if(player.x < obstacle.x + obstacle.width &&
+            player.x + player.width > obstacle.x &&
+            player.y < obstacle.y + obstacle.height &&
+            player.height + player.y > obstacle.y){
+          paused = true;
+          document.getElementById("score").innerHTML = "Game Over!</br>Score: " + score + "</br>";
+       
+        }      
+      }
+    }
+
+    function settingsmsg(){
+      var msg =  {
+	messageType: "SETTING",
+        options: {
+          "width": 480,
+          "height": 270
+        }
+      };
+      window.parent.postMessage(msg, "*");
+    }
+
+    function save(){
+      var msg =  {
+        messageType: "SAVE",
+        gameState: {
+        "playery": player.y,
+        "obstaclex": obstacle.x,
+        "score": score}
+      };
+      window.parent.postMessage(msg, "*");
+    }
+
+    function loadrequest(){
+      var msg =  {
+	messageType: "LOAD_REQUEST"
+      };
+      window.parent.postMessage(msg, "*");
+    }
+
+    function score(){
+      var msg =  {
+	messageType: "SCORE",
+        options: score
+      };
+      window.parent.postMessage(msg, "*");
+    }
+
+  </script>
+  <p>space = jump</br>R = restart</br>S = save</br>L = load</p>
+  <p id="score">Score: 0</p>
+</body>
+</html>
