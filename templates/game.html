@@ -52,25 +52,6 @@
 }
 </script>
 
-</body>
-<head>
-  <meta property="og:url"           content="{{ request.get_full_path }}" />
-  <meta property="og:type"          content="website" />
-  <meta property="og:title"         content="Gameshop - {{ game.name }}" />
-  <meta property="og:description"   content="Come play {{ game.name }} with me!" />
-  <meta property="og:image"         content="{% static 'images/index.jpg' %}" />
-</head>
-<body>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8&appId=1319937658051650";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
-</script>
-
 {% if owned != True %}
 
 <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
@@ -92,11 +73,31 @@
 
 {% else %}
 
-<p>You are now playing " {{ game.name }} "</br>Share this game on facebook!
-  <div class="fb-share-button" 
-    data-href="{{ request.get_full_path }}"
-    data-layout="button">
-  </div>
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<p>You are now playing " {{ game.name }} "</br>
+  <a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet"
+  data-text="Come beat my highscore in {{game.name}}!
+"
+  data-hashtags="{{game.name}}, GameShop, gaming"
+  >
+Tweet</a>
 </p>
 
 <iframe style="background:white;float:left;margin:10px;" src= {{ game.url }} id="game" frameborder="0" scrolling="no">
