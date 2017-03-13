@@ -58,6 +58,7 @@ def register(request):
 
 	return render(request,'register.html', {'form': user_form })
 
+#Used for user e-mail validation
 def confirmation(request):
 	code = request.GET['code']
 	user = UserProfile.objects.get(confcode = code)
@@ -96,7 +97,8 @@ def list_purchased(request, userID="1"):
 	response.render()
 	return response
 
-
+#AJAX query to update scores in gamepage
+@login_required
 def getScores(request):
 	import json
 	gameID = request.GET['gameID']
@@ -105,6 +107,8 @@ def getScores(request):
 	jsonresult = json.dumps(list(scores.values('user__username', 'score')))
 	return HttpResponse(jsonresult)
 
+#AJAX query to update scores to database
+@login_required
 def setScores(request):
 	scores = request.GET['score']
 	gameID = request.GET['gameID']
@@ -120,7 +124,7 @@ def setScores(request):
 	entry.save()
 	return HttpResponse()
 
-
+#View for individual gamepages
 def game(request):
 	gameID = request.GET['gameID']
 	owned = False
@@ -141,6 +145,7 @@ def game(request):
 	response.render()
 	return response
 
+#View for game search
 def results(request):
 	searchterms = request.GET.get('q')
 	terms = searchterms.split()
@@ -155,11 +160,15 @@ def results(request):
 	response.render()
 	return response
 
+#Developer main screen
+@login_required
 def developer(request):
 	response = TemplateResponse(request, 'admin_base.html')
 	response.render()
 	return response
 
+#Developers can add games
+@login_required
 def addgame(request):
 	if request.method == 'POST':
 		form = Addgameform(request.POST, user=request.user)
@@ -171,12 +180,16 @@ def addgame(request):
 
 	return render(request, 'addgame.html', {'form': form})
 
+#Developers can remove games
+@login_required
 def deletegame(request):
 	gameid = request.POST['gameid']
 	game = Games.objects.get(id=gameid)
 	game.delete()
 	return redirect('developergames')
 
+#List of the game made by the developer
+@login_required
 def developergames(request):
 	cur_user = request.user
 	games = Games.objects.filter(dev__id = cur_user.id)
@@ -184,7 +197,8 @@ def developergames(request):
 	response.render()
 	return response
 
-
+#Sales statistics for the developer
+@login_required
 def statistics(request):
 	gameid = request.GET['gameid']
 	cur_user = request.user
@@ -196,6 +210,7 @@ def statistics(request):
 	response.render()
 	return response
 
+#Default shopview
 def shop(request):
 	order_by_name = request.GET.get('order_by', 'name')
 	order_by_price = request.GET.get('order_by', 'price')
@@ -206,7 +221,7 @@ def shop(request):
 	response.render()
 	return response
 
-
+@login_required
 def paysuccess(request):
 	pid = request.GET['pid']
 	ref = request.GET['ref']
@@ -227,23 +242,29 @@ def paysuccess(request):
 	#else:
 	#	return HttpResponse("404")
 
+@login_required
 def paycancel(request):
 	return HttpResponse("404")
 
+@login_required
 def payfail(request):
 	return HttpResponse("404")
 
-
+#List the games of the logged in user
+@login_required
 def mygames(request):
 	currentuser = request.user
 	order_by_name = request.GET.get('order_by', 'game__name')
 	order_by_developer = request.GET.get('order_by', 'dev__username')
 	order_by_released = request.GET.get('order_by', 'game__released')
-	owned_games = Games.objects.filter(id__in=(Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)))
+	pur = Purchased.objects.filter(owner__id=currentuser.id).order_by(order_by_name)
+	pur = pur.values('game__id')
+	owned_games = Games.objects.filter(id__in=pur)
 	response = TemplateResponse(request, 'mygames.html', {'owned_games': owned_games})
 	response.render()
 	return response
 
+#List newest games on the frontpage
 def newgames(request):
 	order_by = request.GET.get('order_by', 'released')
 	games = Games.objects.all(released__year=today.year, released__month=today.month).order_by(order_by)
