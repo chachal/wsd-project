@@ -3,7 +3,6 @@
 {% block page_content %}
 <script>
   function resizeIframe(obj) {
-    //obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
     obj.style.height = "480px";
     obj.style.width = "640px";
   }
@@ -12,9 +11,7 @@
 
   function receiveMessage(event){
     var origin = event.origin || event.originalEvent.origin
-    if(origin !== "http://webcourse.cs.hut.fi"){
-      return;
-    }
+    
     if(event.data.messageType == "SCORE"){
       setScores(event.data.score);
       setTimeout(getScores, 1000);
