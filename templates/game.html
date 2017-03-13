@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load static %}
 {% block page_content %}
 <script>
   function resizeIframe(obj) {
@@ -51,41 +52,63 @@
 }
 </script>
 
-  {% if owned != True %}
+</body>
+<head>
+  <meta property="og:url"           content="{{ request.get_full_path }}" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Gameshop - {{ game.name }}" />
+  <meta property="og:description"   content="Come play {{ game.name }} with me!" />
+  <meta property="og:image"         content="{% static 'images/index.jpg' %}" />
+</head>
+<body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8&appId=1319937658051650";
+  fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
 
-   <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
-    <input type="hidden" name="pid" value="{{ pid }}" />
-    <input type="hidden" name="sid" value="GameshopAAC" />
-    <input type="hidden" name="success_url"
-            value="http://127.0.0.1:8000/payment/success" />
-    <input type="hidden" name="cancel_url"
-            value="http://127.0.0.1:8000/payment/cancel" />
-    <input type="hidden" name="error_url"
-            value="http://127.0.0.1:8000/payment/error" />
-    <input type="hidden" name="checksum"
-            value="{{ checksum }}" />
-    <input type="hidden" name="amount" value="{{ game.price }}"/>
+{% if owned != True %}
 
-    <p>Purchase this game for {{game.price}}</p>
-    <input type="submit" value="Accept Payment"/>
+<form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+  <input type="hidden" name="pid" value="{{ pid }}" />
+  <input type="hidden" name="sid" value="GameshopAAC" />
+  <input type="hidden" name="success_url"
+    value="http://127.0.0.1:8000/payment/success" />
+  <input type="hidden" name="cancel_url"
+    value="http://127.0.0.1:8000/payment/cancel" />
+  <input type="hidden" name="error_url"
+    value="http://127.0.0.1:8000/payment/error" />
+  <input type="hidden" name="checksum"
+    value="{{ checksum }}" />
+  <input type="hidden" name="amount" value="{{ game.price }}"/>
+
+  <p>Purchase this game for {{game.price}}</p>
+  <input type="submit" value="Accept Payment"/>
 </form>
 
-  {% else %}
+{% else %}
 
-  <p>You are now playing " {{ game.name }} "</p>
+<p>You are now playing " {{ game.name }} "</br>Share this game on facebook!
+  <div class="fb-share-button" 
+    data-href="{{ request.get_full_path }}"
+    data-layout="button">
+  </div>
+</p>
 
-    <iframe style="background:white;float:left;margin:10px;" src= {{ game.url }} id="game" frameborder="0" scrolling="no">
-    </iframe>
+<iframe style="background:white;float:left;margin:10px;" src= {{ game.url }} id="game" frameborder="0" scrolling="no">
+</iframe>
 
-    <table id="highscores" style="float:left;margin:10px;">
-      <tr>
-        <th class="highscore">Player</th>
-        <th class="highscore">Highscore</th>
-      </tr>
-      <tbody id=scoreboard>
-      </tbody>
+<table id="highscores" style="float:left;margin:10px;">
+  <tr>
+    <th class="highscore">Player</th>
+    <th class="highscore">Highscore</th>
+  </tr>
+  <tbody id=scoreboard>
+    </tbody>
   </table>
   {% endif %}
-
-
 {% endblock %}
