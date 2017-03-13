@@ -23,6 +23,7 @@ urlpatterns = [
 	url(r'^$', shopviews.index, name='index'),
 	url(r'^getScores/$', shopviews.getScores, name='getscores'),
 	url(r'^setScores/$', shopviews.setScores, name='setscores'),
+	url(r'^saveGame/$', shopviews.saveGame, name='saveGame'),
 	url(r'^register/$', shopviews.register),
 	url(r'^login', shopviews.login, name='login'),
 	url(r'^logout/$', shopviews.logout, name='logout'),

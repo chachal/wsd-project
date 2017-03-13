@@ -37,3 +37,8 @@ class Scores(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	game = models.ForeignKey(Games, on_delete=models.CASCADE)
 	score = models.PositiveIntegerField()
+
+class Saves(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	game = models.ForeignKey(Games, on_delete=models.CASCADE)
+	gamestate = models.CharField(max_length=200)

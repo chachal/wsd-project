@@ -5,12 +5,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Q, Count, Sum
 from django.template.response import TemplateResponse
 from django.template import RequestContext
-from shop.models import UserProfile, Games, Purchased, Scores
+from shop.models import UserProfile, Games, Purchased, Scores, Saves
 from shop.forms import AddUserForm, LoginForm, Addgameform
 from django.core import mail, serializers
 from django.core.signing import Signer
 from shop.util import check_developer, check_admin
 from hashlib import md5
+import json
 
 
 from django.contrib.auth.models import User
@@ -96,9 +97,7 @@ def list_purchased(request, userID="1"):
 	response.render()
 	return response
 
-
 def getScores(request):
-	import json
 	gameID = request.GET['gameID']
 	scores = Scores.objects.filter(game__id=gameID).order_by('-score')[:10]
 	users = UserProfile.objects.all()
@@ -119,6 +118,24 @@ def setScores(request):
 	entry = Scores(user=cur_user, game=gameDB, score=scores)
 	entry.save()
 	return HttpResponse()
+
+def saveGame(request):
+	gameID = request.GET['gameID']
+	gstate = request.GET['gamestate']
+	cur_user = request.user
+	if Saves.objects.filter(Q(game__id=gameID) & Q(user__id=cur_user.id)).exists():
+		entry = Saves.objects.get(Q(game__id=gameID) & Q(user__id=cur_user.id))
+		entry.gamestate = gstate
+		entry.save()
+		return HttpResponse()
+	gameDB = Games.objects.get(id=gameID)
+	entry = Saves(user=cur_user, game=gameDB, gamestate=gstate)
+	entry.save()
+	return HttpResponse()
+
+def loadRequest(request):
+
+def loadGame(request):
 
 
 def game(request):
@@ -183,7 +200,6 @@ def developergames(request):
 	response = TemplateResponse(request, 'developergames.html', {'games':games})
 	response.render()
 	return response
-
 
 def statistics(request):
 	gameid = request.GET['gameid']
