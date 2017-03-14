@@ -47,7 +47,7 @@ def register(request):
 			signer = Signer()
 			signed_value = signer.sign(user_form.cleaned_data['username'])
 			key = ''.join(signed_value.split(':')[1:])
-			url = 'https://aqueous-brook-23280.herokuapp.com/confirmation/?code=' + key
+			url = 'https://fathomless.fortress-57721.herokuapp.com/confirmation/?code=' + key
 			with mail.get_connection() as connection:
 				mail.EmailMessage('Registration confirmation', url, to=[user_form.cleaned_data['email']]).send()
 			user = user_form.save(key, user_form.cleaned_data['role'])
@@ -164,7 +164,6 @@ def game(request):
 	checksumstr = "pid={}&sid={}&amount={}&token={}".format(pid, "GameshopAAC", game.price, "c858a84d04755915ded5daba44a3644f")
 	m = md5(checksumstr.encode("ascii"))
 	checksum = m.hexdigest()
-
 	response = TemplateResponse(request, 'game.html', {'game': game, 'owned': owned, 'checksum':checksum, 'pid':pid})
 	response.render()
 	return response
