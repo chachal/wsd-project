@@ -21,6 +21,7 @@
 
 #searchform {
   margin-top: 12px;
+  margin-left: 14px;
 }
 
 #game {
@@ -89,9 +90,17 @@ th, td {
 }
 
 .navbar-default .navbar-nav>li>a {
-  color: #cecece
+  color: #cecece;
 }
 
 .navbar-default .navbar-nav>li>a:hover {
-  color: #ffffff
+  color: #ffffff;
+}
+
+.tabletitle {
+  background-color: #252525;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+  border-color: black;
 }
