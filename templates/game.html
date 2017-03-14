@@ -8,6 +8,10 @@
 </script>
 <script src="{% static 'js/game.js' %}"></script>
 
+{% if not user.is_authenticated %}
+  <p>Log in to play</p>
+{% endif %}
+
 {% if owned != True %}
 
 <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
