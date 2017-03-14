@@ -33,7 +33,7 @@
   padding-left: 10px;
 }
 
-button {
+button, select {
   background-color: #212121;
   color: #cecece;
 }
