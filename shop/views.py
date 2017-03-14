@@ -223,7 +223,6 @@ def developergames(request):
 
 #Sales statistics for the developer
 @login_required
->>>>>>> bc5fbff0bcc6247b13dc7aae971ba8f70cde36f2
 def statistics(request):
 	gameid = request.GET['gameid']
 	cur_user = request.user
