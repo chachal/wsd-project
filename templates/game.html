@@ -5,44 +5,120 @@
 <script>
   var gmID = {{ game.id }};
   var gmURL = "{{ game.url }}";
+  function resizeIframe(obj) {
+    obj.style.height = "480px";
+    obj.style.width = "640px";
+  }
+
+  window.addEventListener("message", receiveMessage, false);
+
+  function receiveMessage(event){
+    var origin = event.origin || event.originalEvent.origin
+
+    if(event.data.messageType == "SCORE"){
+      setScores(event.data.score);
+      setTimeout(getScores, 1000);
+    }
+    if(event.data.messageType == "SAVE"){
+      window.location.reload();
+    }
+    if(event.data.messageType == "LOAD_REQUEST"){
+      window.location.reload();
+    }
+    if(event.data.messageType == "LOAD"){
+      window.location.reload();
+    }
+    if(event.data.messageType == "ERROR"){
+      alert(event.data.info);
+    }
+    if(event.data.messageType == "SETTING"){
+      document.getElementById("game").width = event.data.options.width;
+      document.getElementById("game").height = event.data.options.height;
+      getScores();
+    }
+
+  }
+  function setScores(scores){
+    $.ajax({type:"GET",url:"/setScores/?gameID={{game.id}}&score=" + scores});
+  }
+
+  function getScores(){
+    $.ajax({type:"GET",dataType:"json",url:"/getScores/?gameID={{game.id}}",success:function(data){
+      inputstr = "";
+      for(index = 0; data.length - 1 >= index; ++index){
+        inputstr += '<tr><td class="highscore">' + data[index].user__username + '</td><td class="highscore">' + data[index].score + '</td></tr>';
+    }
+      document.getElementById("scoreboard").innerHTML = inputstr;
+    },
+  });
+}
+>>>>>>> bc5fbff0bcc6247b13dc7aae971ba8f70cde36f2
 </script>
 <script src="{% static 'js/game.js' %}"></script>
 
-  {% if owned != True %}
+{% if owned != True %}
 
-   <form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
-    <input type="hidden" name="pid" value="{{ pid }}" />
-    <input type="hidden" name="sid" value="GameshopAAC" />
-    <input type="hidden" name="success_url"
-            value="http://127.0.0.1:8000/payment/success" />
-    <input type="hidden" name="cancel_url"
-            value="http://127.0.0.1:8000/payment/cancel" />
-    <input type="hidden" name="error_url"
-            value="http://127.0.0.1:8000/payment/error" />
-    <input type="hidden" name="checksum"
-            value="{{ checksum }}" />
-    <input type="hidden" name="amount" value="{{ game.price }}"/>
+<form action="http://payments.webcourse.niksula.hut.fi/pay/" method="POST">
+  <input type="hidden" name="pid" value="{{ pid }}" />
+  <input type="hidden" name="sid" value="GameshopAAC" />
+  <input type="hidden" name="success_url"
+    value="http://127.0.0.1:8000/payment/success" />
+  <input type="hidden" name="cancel_url"
+    value="http://127.0.0.1:8000/payment/cancel" />
+  <input type="hidden" name="error_url"
+    value="http://127.0.0.1:8000/payment/error" />
+  <input type="hidden" name="checksum"
+    value="{{ checksum }}" />
+  <input type="hidden" name="amount" value="{{ game.price }}"/>
 
+<<<<<<< HEAD
     <p>Purchase this game for {{game.price}}</p>
     <input type="submit" value="Buy game"/>
+=======
+  <p>Purchase this game for {{game.price}}</p>
+  <input type="submit" value="Accept Payment"/>
+>>>>>>> bc5fbff0bcc6247b13dc7aae971ba8f70cde36f2
 </form>
 
-  {% else %}
+{% else %}
 
-  <p>You are now playing " {{ game.name }} "</p>
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
 
-    <iframe style="background:white;float:left;margin:10px;" src= {{ game.url }} id="game" frameborder="0" scrolling="no">
-    </iframe>
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
 
-    <table id="highscores" style="float:left;margin:10px;">
-      <tr>
-        <th class="highscore">Player</th>
-        <th class="highscore">Highscore</th>
-      </tr>
-      <tbody id=scoreboard>
-      </tbody>
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
+<p>You are now playing " {{ game.name }} "</br>
+  <a class="twitter-share-button"
+  href="https://twitter.com/intent/tweet"
+  data-text="Come beat my highscore in {{game.name}}!
+"
+  data-hashtags="{{game.name}}, GameShop, gaming"
+  >
+Tweet</a>
+</p>
+
+<iframe style="background:white;float:left;margin:10px;" src= {{ game.url }} id="game" frameborder="0" scrolling="no">
+</iframe>
+
+<table id="highscores" style="float:left;margin:10px;">
+  <tr>
+    <th class="highscore">Player</th>
+    <th class="highscore">Highscore</th>
+  </tr>
+  <tbody id=scoreboard>
+    </tbody>
   </table>
   {% endif %}
-
-
 {% endblock %}

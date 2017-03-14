@@ -109,7 +109,7 @@
             player.height + player.y > obstacle.y){
           paused = true;
           document.getElementById("score").innerHTML = "Game Over!</br>Score: " + score + "</br>";
-       
+         sendscore(score);  
         }      
       }
     }
@@ -118,8 +118,8 @@
       var msg =  {
 	messageType: "SETTING",
         options: {
-          "width": 480,
-          "height": 270
+          "width": 496,
+          "height": 420
         }
       };
       window.parent.postMessage(msg, "*");
@@ -143,10 +143,10 @@
       window.parent.postMessage(msg, "*");
     }
 
-    function score(){
+    function sendscore(sco){
       var msg =  {
 	messageType: "SCORE",
-        options: score
+        score: sco
       };
       window.parent.postMessage(msg, "*");
     }
