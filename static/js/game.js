@@ -18,20 +18,13 @@ function receiveMessage(event){
     saveGame(event.data.gameState);
   }
   if(event.data.messageType == "LOAD_REQUEST"){
-    window.location.reload();
-  }
-  if(event.data.messageType == "LOAD"){
-    window.location.reload();
-  }
-  if(event.data.messageType == "ERROR"){
-    alert(event.data.info);
+    loadRequest();
   }
   if(event.data.messageType == "SETTING"){
     document.getElementById("game").width = event.data.options.width;
     document.getElementById("game").height = event.data.options.height;
     getScores();
   }
-
 }
 
 function setScores(scores){
@@ -55,10 +48,22 @@ function saveGame(state){
 }
 
 function loadRequest(){
-
-}
-
-function loadGame(state){
-  var gstate = JSON.stringify(state);
-  $.ajax({type:"GET",url:"/saveGame/?gameID=" + gmID + "&gamestate=" + gstate});
+  var gamewin = document.getElementById("game").contentWindow
+  $.ajax({type:"GET",url:"/loadRequest/?gameID=" + gmID,success:function(data){
+    if(data != 0) {
+      var jsonload = JSON.parse(data);
+      var msg = {
+            messageType: "LOAD",
+            gameState: jsonload
+      };
+    }
+    else{
+      var msg = {
+            messageType: "ERROR",
+            info: "No saved game found"
+      };
+    }
+    gamewin.postMessage(msg, gmURL);
+  }
+  })
 }

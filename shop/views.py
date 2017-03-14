@@ -134,8 +134,14 @@ def saveGame(request):
 	return HttpResponse()
 
 def loadRequest(request):
-
-def loadGame(request):
+	gameID = request.GET['gameID']
+	cur_user = request.user
+	if Saves.objects.filter(Q(game__id=gameID) & Q(user__id=cur_user.id)).exists():
+		saved = Saves.objects.get(Q(game__id=gameID) & Q(user__id=cur_user.id))
+		load = saved.gamestate
+		return HttpResponse(load)
+	else:
+		return HttpResponse(0)
 
 
 def game(request):
